@@ -6,14 +6,39 @@
 <body>
     <h1 id="msg">何かのAPI</h1>
     <form name="apiform"><p>
-        何かのフォーム：<input type="text" name="form_data">
+        e-Stat：<input type="text" name="form_data">
         <button type="button" id="btn1" onclick="some_api(this.form)">実行</button>
     </p></form>
     
     <div id="result"></div>
     <script>
         async function some_api(myForm) {
-            // ここにコードを書く
+            
+<script>
+    async function some_api(myForm) {
+        const inputValue = myForm.form_data.value.trim();
+        const resultDiv = document.getElementById("result");
+
+        const url = `http://test.localhost/?query=${encodeURIComponent(inputValue)}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            // 返ってくるデータの形式に応じて調整してください
+            if (data && data.result) {
+                resultDiv.innerHTML += `結果：${data.result}<br />`;
+            } else {
+                resultDiv.innerHTML += `データが見つかりませんでした。<br />`;
+            }
+        } catch (error) {
+            resultDiv.innerHTML += `エラーが発生しました：${error}<br />`;
+        }
+
+        document.apiform.reset();
+    }
+</script>
+
             document.getElementById("result").innerHTML += myForm.form_data.value+"<br />";
             document.apiform.reset();
         }
